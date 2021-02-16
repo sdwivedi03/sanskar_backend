@@ -1,0 +1,34 @@
+{
+  "name": "sanskar_backend",
+  "version": "1.0.0",
+  "description": "A school managment application",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/sdwivedi03/sanskar_backend.git"
+  },
+  "keywords": [
+    "sms",
+    "school",
+    "managment",
+    "system"
+  ],
+  "author": "Satyam Dwivedi",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/sdwivedi03/sanskar_backend/issues"
+  },
+  "homepage": "https://github.com/sdwivedi03/sanskar_backend#readme",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "express": "^4.17.1",
+    "mysql2": "^2.2.5",
+    "sequelize": "^6.5.0"
+  },
+  "devDependencies": {
+    "sequelize-cli": "^6.2.0"
+  }
+}
