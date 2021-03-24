@@ -1,6 +1,6 @@
 const protocol = require('http');
 const app = require('./app');
-const db = require('./models');
+// require('./models').sequelize.sync({force:true});
 
 const normalizePort = (val) => {
     var port = parseInt(val,10);
@@ -37,7 +37,6 @@ const onListening = () => {
     const addr = server.address();
     const bind = typeof addr === "string" ? "pipe" + addr : "port" + port;
     console.log('\x1b[32m\u2713\x1b[0m \x1b[36mserver is listenning on port\x1b[0m',port);
-    db.sequelize.sync();
 };
 
 const port = normalizePort(process.env.PORT || 3000); 
