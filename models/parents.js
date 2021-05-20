@@ -17,9 +17,13 @@ module.exports = (sequelize, DataTypes) => {
     studentId: DataTypes.INTEGER,
     fatherName: DataTypes.STRING,
     motherName: DataTypes.STRING,
+    fatherEducation: DataTypes.STRING,
+    motherEducation: DataTypes.STRING,
     fatherOccupation: DataTypes.STRING,
     motherOccupation: DataTypes.STRING,
-    contactNo: DataTypes.STRING,
+    parentContact: DataTypes.STRING,
+    guardianName: DataTypes.STRING,
+    guardianName: DataTypes.STRING,
     email: DataTypes.STRING
   }, {
     sequelize,

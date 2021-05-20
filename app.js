@@ -1,10 +1,9 @@
 const express = require('express');
-const bodyParser = require('body-parser');
 
 app = express();
 
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({extended:true}));
+app.use(express.json({limit: '5mb'}));
+app.use(express.urlencoded({extended:true}));
 
 app.use((req, res, next) => {
     res.setHeader(

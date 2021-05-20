@@ -15,9 +15,18 @@ module.exports = (sequelize, DataTypes) => {
   };
   Student.init({
     name: DataTypes.STRING,
-    classId: DataTypes.INTEGER,
-    paramanantAddress: DataTypes.STRING,
-    localAddress: DataTypes.STRING
+    standardId: DataTypes.INTEGER,
+    gender: DataTypes.ENUM("MALE","FEMALE"),
+    healthStatus: DataTypes.STRING,
+    image: {
+      type: DataTypes.TEXT('medium'),
+    }, 
+    nationality: DataTypes.STRING,
+    place: DataTypes.STRING,
+    dateOfBirth: DataTypes.DATE,
+    convenience: DataTypes.ENUM("YES","NO"),
+    bloodGroup: DataTypes.STRING,
+
   }, {
     sequelize,
     modelName: 'Student',

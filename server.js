@@ -1,6 +1,7 @@
 const protocol = require('http');
 const app = require('./app');
-// require('./models').sequelize.sync({force:true});
+const db = require('./models');
+// db.sequelize.sync({force:true});
 
 const normalizePort = (val) => {
     var port = parseInt(val,10);
@@ -19,7 +20,8 @@ const onError = (error) => {
     if (error.syscall !== "listen") {
         throw error;
     }
-    const bind = "string" ? "pipe" + addr : "port" + port;
+    const addr = server.address();
+    const bind = typeof addr === "string" ? "pipe" + addr : "port" + port;
     switch (error.code) {
         case "EACCESS":
             console.error(bind + " requires elevated privileges");
