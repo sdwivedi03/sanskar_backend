@@ -11,6 +11,30 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
+      models.Student.hasOne(models.Parents,{
+        foreignKey: 'studentId',
+        as: 'parents'
+      });
+
+      models.Student.hasMany(models.Address,{
+        foreignKey: 'studentId',
+        as: 'address'
+      });
+
+      models.Student.belongsTo(models.Standard,{
+        foreignKey: 'standardId',
+        as: 'standard'
+      });
+
+      models.Student.hasMany(models.FeeStructure, {
+        foreignKey: 'standardId',
+        as: 'feeStructures'
+      });
+
+      models.Student.hasMany(models.FeeTransaction, {
+        foreignKey: 'studentId',
+        as: 'submitedFees'
+      });
     }
   };
   Student.init({
@@ -19,11 +43,11 @@ module.exports = (sequelize, DataTypes) => {
     gender: DataTypes.ENUM("MALE","FEMALE"),
     healthStatus: DataTypes.STRING,
     image: {
-      type: DataTypes.TEXT('medium'),
+      type: DataTypes.TEXT('long'),
     }, 
     nationality: DataTypes.STRING,
     place: DataTypes.STRING,
-    dateOfBirth: DataTypes.DATE,
+    dateOfBirth: DataTypes.DATEONLY,
     convenience: DataTypes.ENUM("YES","NO"),
     bloodGroup: DataTypes.STRING,
 

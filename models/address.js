@@ -19,7 +19,7 @@ module.exports = (sequelize, DataTypes) => {
     addressType: DataTypes.ENUM("LOCAL","PERMANENT","BOTH")
   }, {
     sequelize,
-    modelName: 'address',
+    modelName: 'Address',
   });
   return Address;
 };

@@ -15,7 +15,10 @@ module.exports = (sequelize, DataTypes) => {
   };
   Standard.init({
     name: DataTypes.STRING,
-    isactive: DataTypes.ENUM("INACTIVE","ACTIVE")
+    isActive: {
+      type: DataTypes.ENUM("INACTIVE","ACTIVE"),
+      defaultValue: 'ACTIVE'
+    }
   }, {
     sequelize,
     modelName: 'Standard',

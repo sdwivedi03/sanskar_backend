@@ -1,7 +1,10 @@
 const protocol = require('http');
 const app = require('./app');
 const db = require('./models');
-// db.sequelize.sync({force:true});
+// db.sequelize.sync({alter: true});
+// db.Address.sync({force: true});
+// db.Parents.sync({force: true});
+// db.FeeTransaction.sync({alter: true});
 
 const normalizePort = (val) => {
     var port = parseInt(val,10);
