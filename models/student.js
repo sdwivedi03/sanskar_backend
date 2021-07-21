@@ -35,6 +35,11 @@ module.exports = (sequelize, DataTypes) => {
         foreignKey: 'studentId',
         as: 'submitedFees'
       });
+      
+      // models.Student.hasMany(models.FeeTransaction, {
+      //   foreignKey: 'studentId',
+      //   as: 'submitedFees'
+      // });
     }
   };
   Student.init({

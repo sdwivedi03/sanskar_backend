@@ -7,7 +7,8 @@ const db = require("../models");
  * Student's CRUD
  */
  router.get('/:id',async (req,res) => {
-    const student = await db.Student.findByPk(req.params.id,{
+    const studentId = req.params.id;
+    const student = await db.Student.findByPk(studentId, {
         attributes: [
             'id',
             'name',
@@ -22,12 +23,10 @@ const db = require("../models");
         ],
         include:[
             {
-                // attributes: [
-                //     ['name','standard']
-                // ],
                 model: db.Standard,
                 as: 'standard',
-                required: true
+                required: true,
+                raw: true
             },
             {
                 model: db.Parents,
@@ -64,10 +63,10 @@ router.put('/:id',async (req,res) => {
         }
     });
     console.log("student updated:");
-    res.json({ message:"student record updated successfully", data:student});
+    res.json({ message:"student record updated successfully", data: student});
 });
 
-router.get('',async (req,res) => {
+router.get('/',async (req,res) => {
     db.Standard.hasMany(db.Student,{
         foreignKey: 'standardId',
     });
@@ -108,7 +107,7 @@ router.get('',async (req,res) => {
                 required: false
             }
         ],
-        raw: true
+        raw: false
     });
     console.log("All student",students);
     res.json({message:"",data: students});
@@ -143,12 +142,16 @@ router.post('/:id/parents',async (req,res) => {
 
 router.put('/:id/parents',async (req,res) => {
     // req.body.studentId = req.params.id;
-    const parents = await db.Parents.update(req.body,{
+    console.log('Parents--->>>', req.body,req.params );
+    let parents = await db.Parents.update(req.body,{
         where: {
             studentId: req.params.id
         }
     });
     console.log("parents created:",parents);
+    if(parents[0] === 0) {
+        parents = await db.Parents.create(req.body);
+    }
     res.json({ message:"parents updated for student",data: parents });
 });
 
@@ -157,13 +160,17 @@ router.put('/:id/parents',async (req,res) => {
  * Address's CRUD
  */
 router.get('/:id/address',async (req,res) => {
-    const address = await db.Address.findAll({
-        where:{
-            studentId: req.params.id
-        }
-    });
-    console.log("All student",address);
-    res.json({data: address});
+    try{
+        const address = await db.Address.findAll({
+            where:{
+                studentId: req.params.id
+            }
+        });
+        console.log("All student",address);
+        res.json({data: address});
+    } catch(error){
+
+    }
 });
 
 router.post('/:id/address',async (req,res) => {
@@ -209,49 +216,22 @@ router.put('/:id/address',async (req,res) => {
  */
  router.get('/:id/fee-detail',async (req,res) => {
     // db.Student.hasMany(db.FeeStructure, {foreignKey: standardId});
-    const feeDetail = await db.Student.findOne({
+    const appliedFees = await db.FeeStructure.findAll({
         attributes: [
-            ['id', 'studentId'],
-            // [sequelize.fn('COUNT', sequelize.col('submitedFees.amount')), 'depositedFee']
+            'amount',
+            [db.sequelize.literal(`(SELECT name FROM Fees WHERE id = FeeStructure.feeId)`), 'fee']
         ],
-        include: [
-            {
-                model: db.FeeStructure,
-                as: 'feeStructures',
-                include: {
-                    model: db.Fee,
-                    as: 'fee',
-                    required: true,
-                    raw: false
-
-                },
-                raw: false
-
-            },
-            {
-                model: db.FeeTransaction,
-                as: 'submitedFees',  
-                raw: false
- 
-            },
-        ],
-        where:{
-            id: req.params.id,
-            // year: '2020-2021',
-        },
+        where: db.sequelize.where(db.sequelize.col('standardId'),db.sequelize.literal(`(SELECT standardId FROM Students WHERE id = ${req.params.id})`)),
         raw: false
-        // groupBy: ['id', 'feeStructures']
     });
 
-    console.log("Student's fee detail",feeDetail);
-    let submitedFees = feeDetail.dataValues.submitedFees;
-    let totalDeposited = 0;
-    for(let i = 0; i < submitedFees; i++){
-        totalDeposited += submitedFees[i].amount;
-    }
-    delete feeDetail.dataValues.submitedFees;
-    feeDetail.dataValues.totalDeposited = totalDeposited;
-    res.json({data: feeDetail});
+    const submitedFees = await db.FeeTransaction.sum('amount',{
+        where: {
+            studentId: req.params.id,
+        },
+        raw: false
+    });
+    res.json({data: {appliedFees, submitedFees}});
 });
 
 router.post('/:id/fee-deposit',async (req,res) => {

@@ -20,6 +20,7 @@ module.exports = (sequelize, DataTypes) => {
   }, {
     sequelize,
     modelName: 'Address',
+    unique: ['studentId', 'addressType']
   });
   return Address;
 };

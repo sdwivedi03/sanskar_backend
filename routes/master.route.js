@@ -96,6 +96,14 @@ router.post('/fee-structure',async (req,res) => {
     res.json({message:"Fee structure created",data: feeStructure});
 });
 
+router.delete('/fee-structure',async (req,res) => {
+    console.log("req------------------------->>>>>>>>>>>>>>",req.body);
+    const id = req.body.id;
+    const deletedItem = await db.FeeStructure.destroy(feeStructureArray);
+    console.log("Fee structure created:",deletedItem);
+    res.json({message:"Fee structure created",data: deletedItem});
+});
+
 /**
  * Standards's CRUD
  */

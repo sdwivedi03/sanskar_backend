@@ -6,20 +6,24 @@ const db = require("../models");
 /**
  * Fee's CRUD
  */
- masterDao.get('/fee',async (req,res) => {
-    const students = await db.Fee.findAll();
-    console.log("All fee");
-    res.json({data: students});
-});
+ masterDao.readAllFeeCategory = async () => {
+    try {
+            return await db.Fee.findAll();
+    } catch (error) {
+        console.error(error);
+    }
+};
 
-masterDao.post('/fee',async (req,res) => {
-    // console.log("dskjdwsw",req.body);
-    const feeCategory = await db.Fee.create(req.body);
+masterDao.createFeeCategory = async ( params ) => {
+    try {
+        return await db.Fee.create(params);
+    } catch (error) {
+        console.error(error);
+    }
     console.log("fee category created:",feeCategory);
-    res.json({message:"fee category added",data:feeCategory});
-});
+};
 
-masterDao.delete('/fee',async (req,res) => {
+masterDao.deleteFeeCategoryById('/fee',async (req,res) => {
     console.log("dskjdwsw",req.body);
     const student = await db.Fee.destroy({
         where: {
@@ -33,20 +37,20 @@ masterDao.delete('/fee',async (req,res) => {
 /**
  * Standards's CRUD
  */
-masterDao.get('/standard',async (req,res) => {
+masterDao.readAllStandard('/standard',async (req,res) => {
     const students = await db.Standard.findAll();
     console.log("All student",students);
     res.json({data: students});
 });
 
-masterDao.post('/standard',async (req,res) => {
+masterDao.createStandard('/standard',async (req,res) => {
     const standard = await db.Standard.create(req.body);
     console.log("student created:",standard);
     res.json({message:"standard created",data:standard});
 });
 
 
-masterDao.delete('/standard',async (req,res) => {
+masterDao.deleteStandardById('/standard',async (req,res) => {
     const standard = await db.Standard.destroy({
         where:{
             id: req.body.id

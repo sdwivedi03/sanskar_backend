@@ -27,7 +27,10 @@ module.exports = (sequelize, DataTypes) => {
     standardId: DataTypes.INTEGER,
     feeId: DataTypes.INTEGER,
     frequency: DataTypes.ENUM("MONTHLY","BIMESTERLY","QUARTERLY","QUADRIMESTERLY","HALF-YEARLY","YEARLY"),
-    amount: DataTypes.FLOAT,
+    amount: { 
+      type: DataTypes.FLOAT,
+      defaultValue: 0
+    },
     required: DataTypes.ENUM("OPTIONAL","REQUIRED"),
     isactive: {
       type: DataTypes.ENUM("INACTIVE","ACTIVE"),
